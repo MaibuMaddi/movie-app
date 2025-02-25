@@ -1,0 +1,178 @@
+<app-top-bar></app-top-bar>
+<section class="back">
+    <div class="container">
+        <div class="title">Registration</div>
+        <div class="content">
+            <form [formGroup]="signupForm" action="#">
+                <div class="user-details">
+                    <article class="input-box">
+                        <span for="firstName">First Name:</span>
+                        @if (firstName?.touched && firstName?.invalid) {
+                        <div class="error-list">
+                            @if (firstName?.errors?.['required']) {
+                            <div>
+                                First Name is required
+                            </div>
+                            }
+                        </div>
+                        }
+                        <input type="text" id="firstName" formControlName="firstName" maxlength="10"
+                            placeholder="Enter Your First Name" (keypress)="OnlyAlphabets($event)">
+                    </article>
+                    <article class="input-box">
+                        <span for="lastName">Last Name:</span>
+                        @if (lastName?.touched && lastName?.invalid) {
+                        <div class="error-list">
+                            @if (lastName?.errors?.['required']) {
+                            <div> Last Name is required
+                            </div>
+                            }
+                        </div>
+                        }
+                        <input type="text" id="lastName" formControlName="lastName" maxlength="10"
+                            placeholder="Enter Your Last Name" (keypress)="OnlyAlphabets($event)">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="dateOfBirth">Date of Birth:</span>
+                        @if (dateOfBirth?.touched && dateOfBirth?.invalid) {
+                        <div class="error-list">
+                            @if (dateOfBirth?.errors?.['required']) {
+                            <div> Date of Birth is
+                                required</div>
+                            }
+                        </div>
+                        }
+                        <input type="date" id="dateOfBirth" formControlName="dateOfBirth" [max]="currentDate">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="phoneNumber">Phone Number:</span>
+                        @if (phoneNumber?.touched && phoneNumber?.invalid) {
+                        <div class="error-list">
+                            @if (phoneNumber?.errors?.['required']) {
+                            <div> phone number is
+                                required
+                            </div>
+                            } @else {
+                            <div>
+                                @if (phoneNumber?.errors?.['pattern']) {
+                                <div> Phone number must be 10 digits</div>
+                                }
+                            </div>
+                            }
+                        </div>
+                        }
+                        <input type="text" id="phoneNumber" formControlName="phoneNumber" maxlength="10"
+                            placeholder="Enter Your Phone Number" (keypress)="OnlyNumbers($event)">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="username">Username:</span>
+                        @if (username?.touched && username?.invalid) {
+                        <div class="error-list">
+                            @if (username?.errors?.['required']) {
+                            <div> Username is required</div>
+                            } @else {
+                            @if (username?.errors?.['minlength']) {
+                            <div>
+                                Username must be at least 5 characters.
+                            </div>
+                            }
+                            }
+                        </div>
+                        }
+                        @if (signupForm.valid && statusCode===409 && errorMessage.message.includes('Username')) {
+                        <div class="error-list">
+                            Username already exists
+                        </div>
+                        }
+                        <input type="text" id="username" formControlName="username" maxlength="10"
+                            placeholder="Enter Your Username">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="email">Email:</span>
+                        @if (email?.touched && email?.invalid) {
+                        <div class="error-list">
+                            @if (email?.errors?.['required']) {
+                            <div> Email is required</div>
+                            } @else {
+                            @if (email?.errors?.['invalidEmail']) {
+                            <div>
+                                Invalid email
+                                format
+                            </div>
+                            }
+                            }
+                        </div>
+                        }
+                        @if (signupForm.valid && statusCode===409 && errorMessage.message.includes('Email')) {
+                        <div class="error-list">
+                            Email already exists
+                        </div>
+                        }
+                        <input type="email" id="email" formControlName="email" placeholder="Enter Your Email">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="password">Password:</span>
+                        @if (password?.touched && password?.invalid) {
+                        <div class="error-list">
+                            @if (password?.errors?.['required']) {
+                            <div> Password is required</div>
+                            } @else {
+                            @if (password?.errors?.['length']) {<div> Password must include 8 characters
+                            </div>
+                            } @else if (password?.errors?.['number']) {
+                            <div> Password must include 1 number
+                            </div>
+                            } @else if (password?.errors?.['upper']) {
+                            <div> Password must include 1 uppercase letter</div>
+                            }
+                            @else if (password?.errors?.['lower']) {
+                            <div> Password must include 1 lowercase
+                                letter</div>
+                            } @else if (password?.errors?.['symbol']) {
+                            <div> Password must include 1 symbol
+                            </div>
+                            }
+                            }
+                        </div>
+                        }
+                        <input type="password" id="password" formControlName="password"
+                            placeholder="Enter Your Password">
+                    </article>
+
+                    <article class="input-box">
+                        <span for="confirmPassword">Confirm-Password:</span>
+                        @if (confirmPassword?.touched && confirmPassword?.invalid) {
+                        <div class="error-list">
+                            @if (confirmPassword?.errors?.['required']) {
+                            <div>Confirm-Password is
+                                required</div>
+                            } @else {
+                            @if (confirmPassword?.errors?.['confirmedValidator']) {
+                            <div>
+                                Passwords do not match
+                            </div>
+                            }
+                            }
+                        </div>
+                        }
+                        <input type="password" id="confirmPassword" formControlName="confirmPassword"
+                            placeholder="Re-Enter Your Password">
+                    </article>
+
+                </div>
+                <div class="button">
+                    @if (signupForm.invalid) {<input type="submit" value="Complete Registration" (click)="submitForm()"
+                        title="fill all the required fields">}
+                    @else {<input type="submit" value="Register" [disabled]="signupForm.invalid"
+                        (click)=" saveUserProfile(); serviceError(statusCode); alreadyExists(errorMessage, statusCode)">}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<app-footer></app-footer>

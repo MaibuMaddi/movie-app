@@ -1,0 +1,97 @@
+version: '3.7'
+
+name: my-movie-project
+
+services:
+
+  eureka-server:
+    image: tejajagadeep/movie-app-eureka-server:latest
+    container_name: eureka-container
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    ports:
+      - "8761:8761"
+    networks:
+      - my-movie-network
+
+  config-server:
+    image: tejajagadeep/movie-app-config-server:latest
+    container_name: config-container
+    build:
+      context: config-server
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    networks:
+      - my-movie-network
+
+  authentication-service:
+    image: tejajagadeep/movie-app-authentication-service:latest
+    container_name: authentication-container
+    build:
+      context: authentication-service
+      dockerfile: Dockerfile
+    ports:
+      - "8090:8090"
+    networks:
+      - my-movie-network
+
+  userprofile-service:
+    image: tejajagadeep/movie-app-userprofile-service:latest
+    container_name: userprofile-container
+    build:
+      context: userprofile-service
+      dockerfile: Dockerfile
+    ports:
+      - "8092:8092"
+    networks:
+      - my-movie-network
+
+  movie-service:
+    image: tejajagadeep/movie-app-movie-service:latest
+    container_name: movie-container
+    build:
+      context: movie-service
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - my-movie-network
+
+  wishlist-service:
+    image: tejajagadeep/movie-app-wishlist-service:latest
+    container_name: wishlist-container
+    build:
+      context: wishlist-service
+      dockerfile: Dockerfile
+    ports:
+      - "8082:8082"
+    networks:
+      - my-movie-network
+
+  api-gateway:
+    image: tejajagadeep/movie-app-api-gateway:latest
+    container_name: gateway-container
+    build:
+      context: api-gateway
+      dockerfile: Dockerfile
+    ports:
+      - "8765:8765"
+    networks:
+      - my-movie-network
+
+  swagger-server:
+    image: tejajagadeep/movie-app-swagger-server:latest
+    container_name: swagger-server
+    build:
+      context: swagger-server
+      dockerfile: Dockerfile
+    ports:
+      - "8769:8769"
+    networks:
+      - my-movie-network
+
+networks:
+  my-movie-network:
+    driver: bridge

@@ -1,0 +1,48 @@
+<app-top-bar></app-top-bar>
+@if (movies) {
+@if(statusCode===404) {
+<app-not-found></app-not-found>
+}
+@else if (movies.length===0) {
+<app-no-content></app-no-content>
+}
+@else if (movies.length>0){
+@for (movie of movies; track $index) {
+<div class="movie_card" id="bright">
+    <div class="info_section">
+        <div class="movie_header">
+            <img class="locandina" [src]="movie.image" />
+            <h1 [matTooltip]="movie.title">{{movie.title}}</h1>
+            <h4> {{movie.year}}</h4>
+            <span class="minutes">{{movie.rating}}</span>
+            @for(g of movie.genre; track $index) {
+            <p class="type">{{g}}</p>
+            }
+        </div>
+        <div class="movie_desc">
+            <p class="text">
+                {{movie.description}}
+            </p>
+        </div>
+        <div class="movie_social">
+            <ul>
+                <li><i class="material-icons" matTooltip="play related movie videos"
+                        (click)="play(movie.imdb_link+'/videogallery/')">play</i></li>
+                <li><i class="material-icons" (click)="serviceError(statusCode); delete(movie.imdbid)"
+                        matTooltip="delete from Wishlists">delete</i>
+                </li>
+                <li><i class="material-icons" (click)="moreDetails(movie.imdb_link)"
+                        matTooltip="redirect to Imdb for more details">more</i></li>
+            </ul>
+        </div>
+    </div>
+    <div class="blur_back bright_back" [style.background-image]="'url(' + movie.image + ')'"></div>
+</div>
+}
+} @else {
+<app-internal-server-error></app-internal-server-error>
+}
+} @else {
+<app-not-found></app-not-found>
+}
+<app-footer></app-footer>
